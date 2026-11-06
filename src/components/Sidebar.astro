@@ -1,0 +1,25 @@
+---
+import { pages, pageGroups, brandNav, ui } from "../data/content";
+
+const groups = [
+  { title: brandNav.title, links: [["logo", brandNav.logo], ["colour", brandNav.colour], ["type", brandNav.type]] },
+  ...pageGroups.map((g) => ({ title: g, links: pages.filter((p) => p.group === g).map((p) => [p.id, p.name]) })),
+];
+---
+<aside class="side">
+  <a class="brand" href="#top"><img src="/assets/mark-red.svg" alt="" /><span>Hylates</span></a>
+  <nav aria-label={ui.sections}>
+    {groups.map((g, i) => (
+      <div class="group">
+        <button class="group-title" type="button" aria-expanded={i === 0 ? "true" : "false"} aria-controls={`g-${i}`}>
+          <span>{g.title}</span>
+          <span class="count">{g.links.length}</span>
+          <svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 6.5 3.5 3.5 3.5-3.5" /></svg>
+        </button>
+        <div class="group-links" id={`g-${i}`}>
+          {g.links.map(([id, name]) => <a href={`#${id}`}>{name}</a>)}
+        </div>
+      </div>
+    ))}
+  </nav>
+</aside>

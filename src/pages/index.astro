@@ -1,0 +1,98 @@
+---
+import "../styles/global.css";
+import Sidebar from "../components/Sidebar.astro";
+import PagePreview from "../components/PagePreview.astro";
+import { site, logo, colour, typography, pages, brandNav, ui } from "../data/content";
+
+const panelClass = { black: "p-black", white: "p-white", red: "p-red" } as const;
+---
+<!doctype html>
+<html lang="el">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <title>{site.client} · {site.title}</title>
+    <meta name="description" content={site.intro} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@800&family=Inter:wght@400;500;600&display=swap" />
+  </head>
+  <body>
+    <div class="shell">
+      <Sidebar />
+
+      <main id="top">
+        <div class="col">
+          <header class="intro">
+            <div class="eyebrow">{site.client}</div>
+            <h1>{site.title}</h1>
+            <p>{site.intro}</p>
+          </header>
+
+          <section id="logo">
+            <h2>{brandNav.logo}</h2>
+            <p class="lead">{logo.text}</p>
+            <div class="logos">
+            <div class="lockups">
+              {logo.lockups.map((l) => (
+                <div class={`panel lockup ${panelClass[l.bg]}`}>
+                  <img src={l.src} alt={l.alt} />
+                  <button class="copy" data-svg={l.src}>{ui.copySvg}</button>
+                </div>
+              ))}
+            </div>
+            <div class="marks">
+              {logo.marks.map((m) => (
+                <div class={`panel mark ${panelClass[m.bg]}`}>
+                  <img src={m.src} alt={m.alt} />
+                  <button class="copy" data-svg={m.src}>{ui.copySvg}</button>
+                </div>
+              ))}
+            </div>
+            </div>
+          </section>
+
+          <div class="pair">
+          <section id="colour">
+            <h2>{brandNav.colour}</h2>
+            <p class="lead">{colour.text}</p>
+            <div class="swatches">
+              {colour.swatches.map((s) => (
+                <button class="swatch" data-hex={s.hex}>
+                  <i style={`background:${s.hex}`}></i>
+                  <span><b>{s.name}</b><span>{s.hex}</span></span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section id="type">
+            <h2>{brandNav.type}</h2>
+            <p class="lead">{typography.text}</p>
+            <div class="type">
+              {typography.faces.map((f) => (
+                <div>
+                  <div class={`aa ${f.className}`}>Aa</div>
+                  <div><b>{f.name}</b><span>{f.use}</span></div>
+                </div>
+              ))}
+            </div>
+          </section>
+          </div>
+
+          {pages.map((page) => <PagePreview page={page} />)}
+        </div>
+      </main>
+    </div>
+
+    <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-labelledby="lb-title">
+      <div class="lb-top"><span id="lb-title"></span><button id="lb-close" type="button">{ui.close}</button></div>
+      <div class="lb-scroll" id="lb-scroll"><img id="lb-img" src={pages[0].img} alt="" loading="lazy" /></div>
+    </div>
+    <div class="toast" id="toast" hidden></div>
+
+    <script src="../scripts/handbook.ts"></script>
+  </body>
+</html>
